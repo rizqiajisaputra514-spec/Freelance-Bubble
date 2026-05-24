@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UlarMann - Freelance Bubble</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:#000;
+overflow-x:hidden;
+color:white;
+}
+
+/* BACKGROUND */
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top,#2563eb44,#000 60%),
+linear-gradient(to bottom,#020617,#000,#010b1f);
+z-index:-5;
+}
+
+/* SNOW */
+.snow{
+position:fixed;
+top:-10px;
+width:8px;
+height:8px;
+background:white;
+border-radius:50%;
+opacity:.8;
+pointer-events:none;
+animation:fall linear infinite;
+filter:blur(1px);
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-10vh) translateX(0);
+}
+100%{
+transform:translateY(110vh) translateX(30px);
+}
+}
+
+/* OPENING */
+#opening{
+position:fixed;
+inset:0;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+overflow:hidden;
+}
+
+/* TITLE */
+.open-title{
+font-size:45px;
+font-weight:bold;
+text-align:center;
+line-height:1.5;
+background:linear-gradient(
+90deg,
+#2563eb,
+#60a5fa,
+#ffffff,
+#2563eb
+);
+
+background-size:400%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:
+gradientMove 8s linear infinite,
+zoomIn 3s ease;
+text-shadow:0 0 30px #60a5fa;
+}
+
+@keyframes gradientMove{
+0%{background-position:0%}
+100%{background-position:400%}
+}
+
+@keyframes zoomIn{
+0%{
+transform:scale(0);
+opacity:0;
+}
+100%{
+transform:scale(1);
+opacity:1;
+}
+}
+
+/* LOADING */
+.loading-box{
+margin-top:35px;
+width:320px;
+}
+
+.loading-bar{
+width:100%;
+height:20px;
+background:#111;
+border-radius:30px;
+overflow:hidden;
+border:1px solid #60a5fa;
+}
+
+.loading-fill{
+width:0%;
+height:100%;
+background:linear-gradient(
+90deg,
+#1e3a8a,
+#3b82f6,
+#ffffff
+);
+animation:loading 10s linear forwards;
+}
+
+@keyframes loading{
+100%{
+width:100%;
+}
+}
+
+.loading-text{
+margin-top:10px;
+text-align:center;
+color:#93c5fd;
+font-size:18px;
+}
+
+/* START BUTTON */
+#startBtn{
+margin-top:35px;
+padding:15px 50px;
+border:none;
+border-radius:50px;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+display:none;
+background:linear-gradient(
+90deg,
+#1e3a8a,
+#3b82f6,
+#ffffff
+);
+color:#000;
+transition:.3s;
+box-shadow:0 0 30px #60a5fa;
+}
+
+#startBtn:hover{
+background:white;
+transform:scale(1.1);
+}
+
+/* MAIN */
+#main{
+display:none;
+padding:30px 15px;
+}
+
+/* TITLE MAIN */
+.main-title{
+font-size:55px;
+font-weight:bold;
+text-align:center;
+margin-top:30px;
+
+background:linear-gradient(
+90deg,
+#2563eb,
+#60a5fa,
+#ffffff,
+#2563eb
+);
+
+background-size:400%;
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:gradientMove 8s linear infinite;
+}
+
+/* MARQUEE */
+.marquee{
+margin-top:20px;
+overflow:hidden;
+white-space:nowrap;
+border-top:1px solid #2563eb;
+border-bottom:1px solid #2563eb;
+padding:12px 0;
+background:#07122b;
+}
+
+.marquee span{
+display:inline-block;
+padding-left:100%;
+animation:marquee 15s linear infinite;
+font-size:20px;
+font-weight:bold;
+color:#93c5fd;
+}
+
+@keyframes marquee{
+0%{
+transform:translateX(0);
+}
+100%{
+transform:translateX(-100%);
+}
+}
+
+/* CARD */
+.card{
+max-width:1000px;
+margin:auto;
+margin-top:30px;
+padding:25px;
+border-radius:25px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid #60a5fa44;
+
+backdrop-filter:blur(10px);
+
+box-shadow:0 0 25px #2563eb22;
+}
+
+/* HEAD */
+.card h2{
+margin-bottom:20px;
+color:#93c5fd;
+text-align:center;
+}
+
+/* TEXT */
+.card p{
+line-height:1.9;
+margin-top:12px;
+}
+
+/* JOB BUTTON */
+.job-btn{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:20px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+
+background:linear-gradient(
+90deg,
+#1e3a8a,
+#3b82f6,
+#ffffff
+);
+
+color:white;
+transition:.3s;
+}
+
+.job-btn:hover,
+.job-btn.active{
+background:white;
+color:black;
+}
+
+/* PAYMENT */
+.pay-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.pay-btn{
+padding:15px;
+border:none;
+border-radius:20px;
+font-weight:bold;
+cursor:pointer;
+
+background:linear-gradient(
+90deg,
+#1e3a8a,
+#3b82f6,
+#ffffff
+);
+
+color:#000;
+}
+
+/* INPUT */
+input,
+select,
+textarea{
+width:100%;
+margin-top:15px;
+padding:15px;
+border:none;
+border-radius:15px;
+background:#111827;
+color:white;
+}
+
+textarea{
+min-height:240px;
+resize:none;
+}
+
+/* SEND */
+.send-btn{
+width:100%;
+margin-top:20px;
+padding:16px;
+border:none;
+border-radius:20px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+
+background:linear-gradient(
+90deg,
+#1e3a8a,
+#3b82f6,
+#ffffff
+);
+
+color:black;
+}
+
+/* STAR EFFECT */
+.star{
+position:fixed;
+pointer-events:none;
+animation:starAnim 1s linear forwards;
+font-size:20px;
+}
+
+@keyframes starAnim{
+0%{
+opacity:1;
+transform:scale(1);
+}
+100%{
+opacity:0;
+transform:
+translateY(-100px)
+scale(0);
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- OPENING -->
+<div id="opening">
+
+<h1 class="open-title">
+Selamat Datang Di Web UlarMann
+<br>
+Buruan Join Guysssss
+</h1>
+
+<div class="loading-box">
+
+<div class="loading-bar">
+<div class="loading-fill"></div>
+</div>
+
+<div class="loading-text" id="loadingText">
+Loading 1%
+</div>
+
+</div>
+
+<button id="startBtn">
+START
+</button>
+
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<h1 class="main-title">
+Ayo Join 
+
+
+
+
+
+
+
+
+Freelance Bubble
+</h1>
+
+<!-- RUNNING TEXT -->
+<div class="marquee">
+<span>
+AMANAH 100% • TERPERCAYA •ACC SETIAP JAM 3 SORE • FULL BIMBINGAN • AMANAH 100% • TERPERCAYA • ACC SETIAP JAM 3 SORE • FULL BIMBINGAN 
+</span>
+</div>
+
+<!-- JOB -->
+<div class="card">
+
+<h2>
+🫧 CARA KERJA FREELANCE BUBBLE 🫧
+</h2>
+
+<p>
+1. 👩‍💻 Member Bisnis.<br>
+Tugasnya adalah mempromosikan Bubble Project ke lebih banyak orang. Materi promosi sudah disiapkan, tinggal pakai!
+</p>
+
+<button class="job-btn" onclick="pilihJob(this,'Member Bisnis')">
+Pilih Job Member Bisnis
+</button>
+
+<p>
+2. 📱 Agen Pulsa.<br>
+Menyediakan layanan pengisian pulsa, paket data, dan kebutuhan operator lainnya. Bisa dilakukan secara offline atau online.
+</p>
+
+<button class="job-btn" onclick="pilihJob(this,'Agen Pulsa')">
+Pilih Job Agen Pulsa
+</button>
+
+<p>
+3. 🌐 Agen Kebutuhan Sosmed.<br>
+Menjual layanan followers, likes, viewers, komen dan lainnya untuk berbagai platform sosial media.
+</p>
+
+<button class="job-btn" onclick="pilihJob(this,'Agen Kebutuhan Sosmed')">
+Pilih Job Sosmed
+</button>
+
+<p>
+4. 🎨 Jasa Edit / Wording.<br>
+Menawarkan jasa edit foto/video, desain promosi, caption hingga wording aesthetic.
+</p>
+
+<button class="job-btn" onclick="pilihJob(this,'Jasa Edit / Wording')">
+Pilih Job Edit / Wording
+</button>
+
+<p>
+5. 🔁 Reseller Bubble.<br>
+Jual kembali barang dengan branding sendiri dan membuka toko sendiri.
+</p>
+
+<button class="job-btn" onclick="pilihJob(this,'Reseller Bubble')">
+Pilih Job Reseller Bubble
+</button>
+
+</div>
+
+<!-- HARGA -->
+<div class="card">
+
+<h2>
+💸 Harga Joind Freelance Bubble
+</h2>
+
+<button class="job-btn" onclick="pilihHarga(this,'Rp:15k')">
+= Rp:15k
+</button>
+
+</div>
+
+<!-- PAYMENT -->
+<div class="card">
+
+<h2>
+💳 Pembayaran
+</h2>
+
+<div class="pay-grid">
+
+<button class="pay-btn"
+onclick="copyText('083846735996')">
+SALIN DANA
+<br>
+083846735996
+</button>
+
+<button class="pay-btn"
+onclick="copyText('083159260149')">
+SALIN GOPAY
+<br>
+083159260149
+</button>
+
+<button class="pay-btn"
+onclick="window.open('https://t.me/UlarRMannn')">
+MINTA QRIS
+</button>
+
+</div>
+
+</div>
+
+<!-- FORM -->
+<div class="card">
+
+<h2>
+🫧 FORMAT MEMBER PB 🫧
+</h2>
+
+<input type="text" id="nama"
+placeholder="Nama pengguna telegram">
+
+<input type="text" id="user"
+placeholder="Username telegram">
+
+<input type="number" id="umur"
+placeholder="Umur">
+
+<select id="profesi">
+<option value="">Pilih Profesi</option>
+<option>Kerja</option>
+<option>Mahasiswa</option>
+<option>Pelajar</option>
+</select>
+
+<input type="text" id="kota"
+placeholder="Asal kota">
+
+<textarea id="hasil"></textarea>
+
+<button class="send-btn"
+onclick="kirimTelegram()">
+Kirim Ke Telegram
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* SNOW */
+for(let i=0;i<100;i++){
+
+let snow=document.createElement('div');
+
+snow.classList.add('snow');
+
+snow.style.left=Math.random()*100+'vw';
+
+snow.style.animationDuration=
+(5+Math.random()*10)+'s';
+
+snow.style.opacity=Math.random();
+
+document.body.appendChild(snow);
+
+}
+
+/* LOADING */
+let persen=1;
+
+const text=
+document.getElementById('loadingText');
+
+const btn=
+document.getElementById('startBtn');
+
+let load=setInterval(()=>{
+
+persen++;
+
+text.innerHTML=
+'Loading '+persen+'%';
+
+if(persen>=100){
+
+clearInterval(load);
+
+btn.style.display='block';
+
+}
+
+},100);
+
+/* START */
+btn.onclick=function(){
+
+document.getElementById('opening')
+.style.display='none';
+
+document.getElementById('main')
+.style.display='block';
+
+}
+
+/* COPY */
+function copyText(text){
+
+navigator.clipboard.writeText(text);
+
+alert("Berhasil Disalin : "+text);
+
+}
+
+/* FORMAT */
+let selectedJob='';
+let selectedPrice='';
+
+function pilihJob(el,job){
+
+document
+.querySelectorAll('.job-btn')
+.forEach(btn=>{
+
+btn.classList.remove('active');
+
+});
+
+el.classList.add('active');
+
+selectedJob=job;
+
+updateFormat();
+
+}
+
+function pilihHarga(el,price){
+
+selectedPrice=price;
+
+el.classList.add('active');
+
+updateFormat();
+
+}
+
+function updateFormat(){
+
+const nama=
+document.getElementById('nama').value;
+
+const user=
+document.getElementById('user').value;
+
+const umur=
+document.getElementById('umur').value;
+
+const profesi=
+document.getElementById('profesi').value;
+
+const kota=
+document.getElementById('kota').value;
+
+document.getElementById('hasil').value=
+`🫧 FORMAT MEMBER PB 🫧
+
+⋮ ⌗ nama pengguna telegram: ${nama}
+⋮ ⌗ username telegram: @${user}
+⋮ ⌗ umur: ${umur}
+⋮ ⌗ profesi: ${profesi}
+⋮ ⌗ asal kota: ${kota}
+⋮ ⌗ leader:@UlarRMannn
+⋮ ⌗ sdh donasi?:✓
+⋮ ⌗ Job: ${selectedJob}
+⋮ ⌗ Rp: ${selectedPrice}`;
+
+}
+
+document
+.querySelectorAll('input,select')
+.forEach(el=>{
+
+el.addEventListener('input',
+updateFormat);
+
+});
+
+/* TELEGRAM */
+function kirimTelegram(){
+
+const text=
+document.getElementById('hasil').value;
+
+window.open(
+`https://t.me/UlarRMannn?text=${encodeURIComponent(text)}`
+);
+
+}
+
+/* STAR EFFECT */
+document.addEventListener('click',e=>{
+
+for(let i=0;i<15;i++){
+
+let star=document.createElement('div');
+
+star.classList.add('star');
+
+star.innerHTML='⭐';
+
+star.style.left=e.pageX+'px';
+
+star.style.top=e.pageY+'px';
+
+star.style.fontSize=
+(10+Math.random()*25)+'px';
+
+document.body.appendChild(star);
+
+setTimeout(()=>{
+
+star.remove();
+
+},1000);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
